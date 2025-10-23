@@ -1,11 +1,15 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ActivityIndicator, Alert } from 'react-native';
+import { fetchQuestionsFromAPI } from '../../services/triviaApiService';
 
 interface CategoryScreenProps {
   navigation: any;
 }
 
 export function CategoryScreen({ navigation }: CategoryScreenProps) {
+  const [loading, setLoading] = useState(false);
+  const [loadingCategory, setLoadingCategory] = useState<string | null>(null);
+
   const categories = [
     'Conocimientos Generales',
     'Ciencia',
@@ -13,20 +17,67 @@ export function CategoryScreen({ navigation }: CategoryScreenProps) {
     'Historia'
   ];
 
-  const handleSelectCategory = (category: string) => {
-    navigation.navigate('Question', { category });
+  const handleSelectCategory = async (category: string) => {
+    setLoading(true);
+    setLoadingCategory(category);
+    
+    try {
+      console.log('📥 Cargando preguntas para:', category);
+      
+      // Obtener preguntas desde la API
+      const questions = await fetchQuestionsFromAPI(category, 5);
+      
+      if (questions.length > 0) {
+        console.log('✅ Preguntas cargadas correctamente');
+        
+        // Navegar con las preguntas de la API
+        navigation.navigate('Question', { 
+          category,
+          questions,
+          source: 'api'
+        });
+      } else {
+        throw new Error('No se recibieron preguntas');
+      }
+      
+    } catch (error) {
+      console.error('❌ Error:', error);
+      
+      // Mostrar alerta y ofrecer usar preguntas locales
+      Alert.alert(
+        'Error de Conexión',
+        'No se pudieron cargar las preguntas de internet. ¿Quieres usar preguntas guardadas en la app?',
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel'
+          },
+          {
+            text: 'Usar Guardadas',
+            onPress: () => {
+              navigation.navigate('Question', { 
+                category,
+                questions: null, // Usará triviaData local
+                source: 'local'
+              });
+            }
+          }
+        ]
+      );
+    } finally {
+      setLoading(false);
+      setLoadingCategory(null);
+    }
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        {/* Título centrado */}
         <View style={styles.headerContainer}>
           <Text style={styles.title}>Trivia Game</Text>
           <Text style={styles.subtitle}>Selecciona Categoría</Text>
         </View>
         
-        {/* Categorías centradas */}
         <View style={styles.categoriesWrapper}>
           <View style={styles.categoriesContainer}>
             {categories.map((category) => (
@@ -35,11 +86,23 @@ export function CategoryScreen({ navigation }: CategoryScreenProps) {
                 onPress={() => handleSelectCategory(category)}
                 style={styles.categoryButton}
                 activeOpacity={0.8}
+                disabled={loading}
               >
-                <Text style={styles.categoryText}>{category}</Text>
+                {loading && loadingCategory === category ? (
+                  <ActivityIndicator size="small" color="#FFFFFF" />
+                ) : (
+                  <Text style={styles.categoryText}>{category}</Text>
+                )}
               </TouchableOpacity>
             ))}
           </View>
+          
+          {loading && (
+            <View style={styles.loadingOverlay}>
+              <ActivityIndicator size="large" color="#FBBF24" />
+              <Text style={styles.loadingText}>Cargando preguntas desde internet...</Text>
+            </View>
+          )}
         </View>
       </View>
     </SafeAreaView>
@@ -87,16 +150,24 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     paddingVertical: 24,
     paddingHorizontal: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    minHeight: 72,
+    justifyContent: 'center',
   },
   categoryText: {
     color: '#FFFFFF',
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  loadingOverlay: {
+    position: 'absolute',
+    alignItems: 'center',
+    bottom: 50,
+  },
+  loadingText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 12,
   },
 });

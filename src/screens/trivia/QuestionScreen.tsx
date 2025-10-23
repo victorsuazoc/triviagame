@@ -9,12 +9,18 @@ interface QuestionScreenProps {
 
 export function QuestionScreen({ navigation, route }: QuestionScreenProps) {
   const { category } = route.params;
-  const questions = triviaData[category];
+  
+  const questions = route.params.questions || triviaData[category];
+  const source = route.params.source || 'local';
   
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [results, setResults] = useState<any[]>([]);
+
+  React.useEffect(() => {
+    console.log(`📝 Usando preguntas desde: ${source === 'api' ? 'Internet (API)' : 'Almacenamiento local'}`);
+  }, []);
 
   const currentQuestion = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
@@ -116,7 +122,7 @@ export function QuestionScreen({ navigation, route }: QuestionScreenProps) {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.optionsContent}
         >
-          {currentQuestion.options.map((option, index) => (
+          {currentQuestion.options.map((option: string, index: number) => (
             <TouchableOpacity
               key={index}
               onPress={() => handleSelectAnswer(index)}
