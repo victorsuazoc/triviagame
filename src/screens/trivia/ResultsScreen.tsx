@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView, Image } from 'react-native';
 
 interface Result {
   question: string;
@@ -26,7 +26,11 @@ export function ResultsScreen({ navigation, route }: ResultsScreenProps) {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <View style={styles.headerContainer}>
-          <Text style={styles.title}>Trivia Game</Text>
+          <Image 
+            source={require('../../../assets/trivia-logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
           <Text style={styles.subtitle}>Resultados</Text>
         </View>
         
@@ -77,7 +81,7 @@ export function ResultsScreen({ navigation, route }: ResultsScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EF4444',
+    backgroundColor: '#cb0000',
   },
   content: {
     flex: 1,
@@ -89,12 +93,10 @@ const styles = StyleSheet.create({
     marginTop: 60,
     marginBottom: 24,
   },
-  title: {
-    fontSize: 56,
-    fontWeight: '900',
-    color: '#FBBF24',
-    marginBottom: 8,
-    textAlign: 'center',
+  logo: {
+    width:280,
+    height: 100,
+    marginBottom: 16,
   },
   subtitle: {
     fontSize: 28,
@@ -108,11 +110,6 @@ const styles = StyleSheet.create({
     padding: 24,
     marginBottom: 24,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   scoreText: {
     color: '#1F2937',
@@ -134,14 +131,9 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   resultCard: {
-    backgroundColor: '#F97316',
+    backgroundColor: '#fa6800ff',
     borderRadius: 16,
     padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   resultQuestion: {
     color: '#FFFFFF',
@@ -160,22 +152,17 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   correct: {
-    color: '#86EFAC',
+    color: '#49ca8aff',
   },
   incorrect: {
     color: '#FDE047',
   },
   playAgainButton: {
-    backgroundColor: '#22D3EE',
+    backgroundColor: '#01aee2ff',
     borderRadius: 16,
     paddingVertical: 20,
     paddingHorizontal: 24,
     marginTop: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   playAgainText: {
     color: '#FFFFFF',

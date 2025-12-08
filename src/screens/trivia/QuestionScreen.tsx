@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView, Alert, Image } from 'react-native';
 import { triviaData } from '../../data/triviaData';
 
 interface QuestionScreenProps {
@@ -9,7 +9,6 @@ interface QuestionScreenProps {
 
 export function QuestionScreen({ navigation, route }: QuestionScreenProps) {
   const { category } = route.params;
-  
   const questions = route.params.questions || triviaData[category];
   const source = route.params.source || 'local';
   
@@ -45,12 +44,11 @@ export function QuestionScreen({ navigation, route }: QuestionScreenProps) {
   };
 
   const handleSelectAnswer = (index: number) => {
-    if (showResult) return; // No permitir cambiar respuesta después de mostrar resultado
+    if (showResult) return;
     
     setSelectedAnswer(index);
     setShowResult(true);
 
-    // Esperar 1.5 segundos antes de pasar a la siguiente pregunta
     setTimeout(() => {
       handleNext(index);
     }, 1500);
@@ -80,26 +78,21 @@ export function QuestionScreen({ navigation, route }: QuestionScreenProps) {
 
   const getOptionStyle = (index: number) => {
     if (!showResult) {
-      // Antes de mostrar resultado, todos se ven normales
       return styles.optionButton;
     }
 
-    // Después de responder: solo la seleccionada cambia de color
     if (index === selectedAnswer) {
-      // Si acertó: verde, si falló: rojo
       return selectedAnswer === currentQuestion.correct 
         ? styles.optionButtonCorrect 
         : styles.optionButtonWrong;
     }
     
-    // Las demás opciones se quedan moradas normales
     return styles.optionButton;
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        {/* Botón de regreso */}
         <TouchableOpacity 
           style={styles.backButton}
           onPress={handleBack}
@@ -108,7 +101,12 @@ export function QuestionScreen({ navigation, route }: QuestionScreenProps) {
           <Text style={styles.backButtonText}>← Volver</Text>
         </TouchableOpacity>
 
-        <Text style={styles.title}>Trivia Game</Text>
+        <Image 
+          source={require('../../../assets/trivia-logo.png')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+        
         <Text style={styles.subtitle}>Pregunta {currentQuestionIndex + 1} de {totalQuestions}</Text>
         
         <View style={styles.questionContainer}>
@@ -153,7 +151,7 @@ export function QuestionScreen({ navigation, route }: QuestionScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#22D3EE',
+    backgroundColor: '#00aee5',
   },
   content: {
     flex: 1,
@@ -174,12 +172,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  title: {
-    fontSize: 56,
-    fontWeight: '900',
-    color: '#FBBF24',
+  logo: {
+    width: 280,
+    height: 100,
+    alignSelf: 'center',
     marginBottom: 8,
-    textAlign: 'center',
   },
   subtitle: {
     fontSize: 24,
@@ -208,19 +205,19 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   optionButton: {
-    backgroundColor: '#9333EA', // Morado normal
+    backgroundColor: '#6600c5ff',
     borderRadius: 16,
     paddingVertical: 20,
     paddingHorizontal: 24,
   },
   optionButtonCorrect: {
-    backgroundColor: '#10B981', // Verde cuando es correcta
+    backgroundColor: '#03a02aff',
     borderRadius: 16,
     paddingVertical: 20,
     paddingHorizontal: 24,
   },
   optionButtonWrong: {
-    backgroundColor: '#DC2626', // Rojo cuando es incorrecta
+    backgroundColor: '#DC2626',
     borderRadius: 16,
     paddingVertical: 20,
     paddingHorizontal: 24,
@@ -240,7 +237,7 @@ const styles = StyleSheet.create({
     fontWeight: '900',
   },
   feedbackCorrect: {
-    color: '#10B981',
+    color: '#03a02aff',
   },
   feedbackWrong: {
     color: '#DC2626',

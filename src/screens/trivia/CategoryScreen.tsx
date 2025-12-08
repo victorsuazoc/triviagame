@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ActivityIndicator, Alert, Image } from 'react-native';
 import { fetchQuestionsFromAPI } from '../../services/triviaApiService';
 
 interface CategoryScreenProps {
@@ -23,14 +23,10 @@ export function CategoryScreen({ navigation }: CategoryScreenProps) {
     
     try {
       console.log('📥 Cargando preguntas para:', category);
-      
-      // Obtener preguntas desde la API
       const questions = await fetchQuestionsFromAPI(category, 5);
       
       if (questions.length > 0) {
         console.log('✅ Preguntas cargadas correctamente');
-        
-        // Navegar con las preguntas de la API
         navigation.navigate('Question', { 
           category,
           questions,
@@ -42,11 +38,9 @@ export function CategoryScreen({ navigation }: CategoryScreenProps) {
       
     } catch (error) {
       console.error('❌ Error:', error);
-      
-      // Mostrar alerta y ofrecer usar preguntas locales
       Alert.alert(
         'Error de Conexión',
-        'No se pudieron cargar las preguntas de internet. ¿Quieres usar preguntas guardadas en la app?',
+        '¿Quieres usar preguntas guardadas en la app?',
         [
           {
             text: 'Cancelar',
@@ -57,7 +51,7 @@ export function CategoryScreen({ navigation }: CategoryScreenProps) {
             onPress: () => {
               navigation.navigate('Question', { 
                 category,
-                questions: null, // Usará triviaData local
+                questions: null,
                 source: 'local'
               });
             }
@@ -74,7 +68,12 @@ export function CategoryScreen({ navigation }: CategoryScreenProps) {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <View style={styles.headerContainer}>
-          <Text style={styles.title}>Trivia Game</Text>
+          {/* Logo como imagen */}
+          <Image 
+            source={require('../../../assets/trivia-logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
           <Text style={styles.subtitle}>Selecciona Categoría</Text>
         </View>
         
@@ -100,7 +99,7 @@ export function CategoryScreen({ navigation }: CategoryScreenProps) {
           {loading && (
             <View style={styles.loadingOverlay}>
               <ActivityIndicator size="large" color="#FBBF24" />
-              <Text style={styles.loadingText}>Cargando preguntas desde internet...</Text>
+              <Text style={styles.loadingText}>Cargando preguntas...</Text>
             </View>
           )}
         </View>
@@ -112,7 +111,7 @@ export function CategoryScreen({ navigation }: CategoryScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#7C3AED',
+    backgroundColor: '#7800c9ff',
   },
   content: {
     flex: 1,
@@ -123,12 +122,10 @@ const styles = StyleSheet.create({
     marginTop: 60,
     marginBottom: 40,
   },
-  title: {
-    fontSize: 56,
-    fontWeight: '900',
-    color: '#FBBF24',
-    marginBottom: 8,
-    textAlign: 'center',
+  logo: {
+    width: 280,
+    height: 120,
+    marginBottom: 16,
   },
   subtitle: {
     fontSize: 28,
@@ -146,7 +143,7 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   categoryButton: {
-    backgroundColor: '#22D3EE',
+    backgroundColor: '#01aee2ff',
     borderRadius: 16,
     paddingVertical: 24,
     paddingHorizontal: 24,
