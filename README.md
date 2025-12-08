@@ -77,7 +77,7 @@ triviagame/
 ├── tsconfig.json                  # Configuración de TypeScript
 ├── assets/                        # Recursos estáticos
 │   ├── icon.png                   # Ícono de la app
-│   ├── splash-icon.png                 # Pantalla de carga
+│   ├── splash.png                 # Pantalla de carga
 │   ├── adaptive-icon.png          # Ícono adaptativo Android
 │   └── trivia-logo.png            # Logo para pantallas
 ├── apk/                           # APK para distribución
@@ -153,7 +153,9 @@ npx expo start --ios
 
 ### **Descarga Directa**
 
-📥 [**Descargar trivia-game.apk**](./apk/trivia-game.apk)
+📥 [**Descargar trivia-game.apk**](https://github.com/victorsuazoc/triviagame/releases/download/v1.0.0/trivia-game.apk)
+
+> **Nota:** Si el link no funciona, ve a [Releases](https://github.com/victorsuazoc/triviagame/releases) y descarga manualmente.
 
 ### **Instalación en Android**
 
