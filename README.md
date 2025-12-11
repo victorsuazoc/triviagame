@@ -192,7 +192,7 @@ Esta APK está firmada digitalmente y es segura. El aviso de "fuente desconocida
 
 ### Pantalla de Categorías (Morada)
 <div align="center">
-  <img src="./screenshots/pantalla 1.jpg" width="300" alt="Pantalla de Categorías" />
+  <img src="./screenshots/pantalla 1.jpg" width="200" alt="Pantalla de Categorías" />
 </div>
 
 - Logo personalizado "Trivia Game"
@@ -203,7 +203,7 @@ Esta APK está firmada digitalmente y es segura. El aviso de "fuente desconocida
 
 ### Pantalla de Preguntas (Cyan)
 <div align="center">
-  <img src="./screenshots/pantalla 2.jpg" width="300" alt="Pantalla de Preguntas" />
+  <img src="./screenshots/pantalla 2.jpg" width="200" alt="Pantalla de Preguntas" />
 </div>
 
 - Indicador de progreso (Pregunta X de 5)
@@ -216,7 +216,7 @@ Esta APK está firmada digitalmente y es segura. El aviso de "fuente desconocida
 
 ### Pantalla de Resultados (Roja)
 <div align="center">
-  <img src="./screenshots/pantalla 3.jpg" width="300" alt="Pantalla de Resultados" />
+  <img src="./screenshots/pantalla 3.jpg" width="200" alt="Pantalla de Resultados" />
 </div>
 
 - Puntuación total y porcentaje
